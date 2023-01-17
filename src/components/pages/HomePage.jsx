@@ -1,16 +1,16 @@
 import React from "react";
-import { ToDoList } from "../organisms/ToDoList";
-import { BlogDetails } from "../organisms/BlogDetails";
+import { BlogsList } from "../organisms/BlogsList";
+import { BlogCategorySelection } from "../organisms/BlogCategorySelection";
 import { Grid } from "@mui/material";
 
 const HomePage = () => {
   return (
     <Grid container spacing={2}>
-      <Grid item xs={4}>
-        <ToDoList />
-      </Grid>
       <Grid item xs={8}>
-        <BlogDetails />
+        <BlogsList />
+      </Grid>
+      <Grid item xs={4}>
+        <BlogCategorySelection />
       </Grid>
     </Grid>
   );
