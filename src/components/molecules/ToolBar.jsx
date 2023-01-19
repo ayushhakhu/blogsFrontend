@@ -7,6 +7,6 @@ const StyledToolbar = styled(MuiToolbar)({
   justifyContent: "space-around",
   backgroundColor: "#cfcfcf",
 });
-export const ToolBar = ({ rest, children }) => {
-  return <StyledToolbar {...rest}>{children}</StyledToolbar>;
+export const ToolBar = ({ ...props }) => {
+  return <StyledToolbar {...props}>{props.children}</StyledToolbar>;
 };

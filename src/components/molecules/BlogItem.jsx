@@ -49,31 +49,35 @@ const StyledBlogDetails = styled(Typography)({
   color: "rgba(117, 117, 117, 1)",
 });
 
-export const BlogItem = (props) => {
-  const { blogTitle, blogCategory, blogAuthor, blogDetails, _id } = props;
-
+export const BlogItem = ({
+  blogTitle,
+  blogCategory,
+  blogAuthor,
+  blogDetails,
+  _id,
+  ...props
+}) => {
   const navigate = useNavigate();
   return (
     <Paper
       elevation={0}
       sx={{ display: "flex", margin: 1 }}
-      onClick={() => navigate(`/${_id}`)}
+      onClick={() => navigate(`/blog/${_id}`)}
     >
       <StyledStack>
         <ListItemText>
-          <StyledUsername variant="h4" title={blogAuthor} />
+          <StyledUsername variant="h4">{blogAuthor}</StyledUsername>
         </ListItemText>
         <ListItemText>
-          <StyledBlogTitle variant="h3" title={blogTitle} />
+          <StyledBlogTitle variant="h3">{blogTitle}</StyledBlogTitle>
         </ListItemText>
         <ListItemText>
-          <StyledBlogCategory
-            variant="subtitle2"
-            title={`Category: ${blogCategory}`}
-          />
+          <StyledBlogCategory variant="subtitle2">{`Category: ${blogCategory}`}</StyledBlogCategory>
         </ListItemText>
         <ListItemText>
-          <StyledBlogDetails noWrap variant="body1" title={blogDetails} />
+          <StyledBlogDetails noWrap variant="body1">
+            {blogDetails}
+          </StyledBlogDetails>
         </ListItemText>
       </StyledStack>
     </Paper>

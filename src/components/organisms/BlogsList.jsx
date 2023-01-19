@@ -1,7 +1,4 @@
 import React from "react";
-import { Typography } from "../atoms/Typography";
-import { Stack } from "../atoms/Stack";
-import { Pagination } from "../atoms/Pagination";
 import { Paper } from "../molecules/Paper";
 import { BlogItem } from "../molecules/BlogItem";
 
@@ -65,10 +62,12 @@ const bloglist = [
 export const BlogsList = (props) => {
   return (
     <Paper
+      elevation={0}
       sx={{
         display: "flex",
         padding: 10,
-        marginTop: 10,
+        paddingTop: 0,
+        borderRadius: 0,
         flexDirection: "column",
       }}
     >

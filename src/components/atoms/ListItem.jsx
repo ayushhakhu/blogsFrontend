@@ -13,6 +13,6 @@ const StyledListItem = styled(MuiListItem)({
   alignContent: "center",
 });
 
-export const ListItem = (props) => {
+export const ListItem = ({ ...props }) => {
   return <StyledListItem {...props}>{props.children}</StyledListItem>;
 };

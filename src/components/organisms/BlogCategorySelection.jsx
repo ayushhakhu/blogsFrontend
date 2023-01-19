@@ -7,7 +7,6 @@ import { Button } from "../atoms/Button";
 const StyledBlogCategorySelection = styled(Paper)({
   display: "flex",
   padding: 10,
-  marginTop: 80,
   flexDirection: "column",
   position: "sticky",
   top: 0,
@@ -25,7 +24,7 @@ const categoriesList = [
 
 export const BlogCategorySelection = () => {
   return (
-    <StyledBlogCategorySelection>
+    <StyledBlogCategorySelection elevation={0}>
       <Typography
         variant={"body1"}
         sx={{
@@ -39,8 +38,9 @@ export const BlogCategorySelection = () => {
           fontFamily: `sohne, "Helvetica Neue", Helvetica, Arial, sans-serif`,
         }}
         style={{ paddingTop: 10 }}
-        title={"Discover more of what matters to you"}
-      />
+      >
+        {"Discover more of what matters to you"}
+      </Typography>
       <div style={{ margin: 0, padding: 0 }}>
         {categoriesList.map((item) => (
           <Button
@@ -52,11 +52,12 @@ export const BlogCategorySelection = () => {
               fontFamily: `sohne, "Helvetica Neue", Helvetica, Arial, sans-serif`,
               fontWeight: "inherit",
             }}
-            buttonContent={item}
             disableRipple
             color="inherit"
             variant="outlined"
-          />
+          >
+            {item}
+          </Button>
         ))}
       </div>
     </StyledBlogCategorySelection>

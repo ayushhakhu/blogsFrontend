@@ -7,6 +7,6 @@ const StyledMuiStack = styled(MuiStack)({
   alignItems: "center",
 });
 
-export const Stack = (props) => {
+export const Stack = ({ ...props }) => {
   return <StyledMuiStack {...props}>{props.children}</StyledMuiStack>;
 };

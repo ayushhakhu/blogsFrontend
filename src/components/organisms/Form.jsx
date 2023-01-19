@@ -5,15 +5,13 @@ import { TextField } from "../atoms/TextField";
 import { Stack } from "../atoms/Stack";
 import { Typography } from "../atoms/Typography";
 
-export const Form = (props) => {
-  const { fields, onClickHandler, formtitle } = props;
-
+export const Form = ({ fields, onClickHandler, formtitle, ...props }) => {
   const { control, handleSubmit } = useForm();
   return (
     <Paper elevation={10}>
       <form onSubmit={handleSubmit(onClickHandler)}>
         <Stack spacing={5}>
-          <Typography title={formtitle} />
+          <Typography>{formtitle}</Typography>
           {fields.map((item) => (
             <Controller
               name={item.name}

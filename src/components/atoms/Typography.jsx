@@ -4,11 +4,10 @@ import styled from "@emotion/styled";
 
 const StyledTypography = styled(MuiTypography)({});
 
-export const Typography = (props) => {
-  const { title } = props;
+export const Typography = ({ ...props }) => {
   return (
     <StyledTypography variant="h4" {...props}>
-      {title}
+      {props.children}
     </StyledTypography>
   );
 };

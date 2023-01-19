@@ -1,6 +1,7 @@
 import React, { useMemo, useCallback } from "react";
 import { Paper } from "../molecules/Paper";
 import { Form } from "../organisms/Form";
+import { AppBar } from "../organisms/AppBar";
 
 const SignupPage = () => {
   const fields = useMemo(
@@ -16,13 +17,16 @@ const SignupPage = () => {
   }, []);
 
   return (
-    <Paper elevation={0}>
-      <Form
-        fields={fields}
-        onClickHandler={onClickHandler}
-        formtitle="Signup"
-      />
-    </Paper>
+    <>
+      <AppBar />
+      <Paper elevation={0}>
+        <Form
+          fields={fields}
+          onClickHandler={onClickHandler}
+          formtitle="Signup"
+        />
+      </Paper>
+    </>
   );
 };
 

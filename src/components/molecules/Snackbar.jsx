@@ -3,9 +3,8 @@ import { useState } from "react";
 import { IconButton } from "../atoms/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 
-export const Snackbar = (props) => {
+export const Snackbar = ({ message, ...props }) => {
   const [open, setopen] = useState(true);
-  const { message } = props;
   return (
     <MuiSnackbar
       autoHideDuration={2000}

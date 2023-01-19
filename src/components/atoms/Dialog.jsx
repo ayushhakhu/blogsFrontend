@@ -8,9 +8,7 @@ const StyledDialog = styled(MuiDialog)({
   padding: 20,
 });
 
-export const Dialog = (props) => {
-  const { dialog, handleClose } = props;
-
+export const Dialog = ({ dialog, handleClose, ...props }) => {
   return (
     <StyledDialog open={dialog} onClose={handleClose}>
       {props.children}
