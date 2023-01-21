@@ -21,16 +21,6 @@ const StyledStack = styled(Stack)(({ theme }) => ({
     maxWidth: 600,
   },
 }));
-
-const StyledUsername = styled(Typography)({
-  overflow: "hidden",
-  width: 600,
-  fontSize: 13,
-  fontWeight: 500,
-  color: `rgba(41, 41, 41, 1)`,
-  fontFamily: `sohne, "Helvetica Neue", Helvetica, Arial, sans-serif`,
-});
-
 const StyledBlogTitle = styled(Typography)({
   overflow: "hidden",
   width: 600,
@@ -50,11 +40,11 @@ const StyledBlogCategory = styled(Typography)({
 
 const StyledBlogDetails = styled(Typography)({
   overflow: "hidden",
+  fontSize: 16,
+  fontWeight: 400,
   maxWidth: "inherit",
   maxHeight: 50,
   overflowWrap: "break-word",
-  fontSize: 16,
-  fontWeight: 400,
   fontFamily: `sohne, "Helvetica Neue", Helvetica, Arial, sans-serif`,
   color: "rgba(117, 117, 117, 1)",
 });
@@ -72,7 +62,7 @@ const StyledItem = styled(Paper)(({ theme }) => ({
   paddingBlock: 10,
 }));
 
-export const BlogItem = ({
+export const MyBlogItem = ({
   blogTitle,
   blogCategory,
   blogAuthor,
@@ -84,9 +74,6 @@ export const BlogItem = ({
   return (
     <StyledItem elevation={0} onClick={() => navigate(`/blog/${_id}`)}>
       <StyledStack>
-        <ListItemText>
-          <StyledUsername variant="h4">{blogAuthor}</StyledUsername>
-        </ListItemText>
         <ListItemText>
           <StyledBlogTitle variant="h3">{blogTitle}</StyledBlogTitle>
         </ListItemText>

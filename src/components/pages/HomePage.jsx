@@ -9,10 +9,10 @@ const HomePage = () => {
     <>
       <AppBar />
       <Grid container spacing={0}>
-        <Grid item xs={8}>
+        <Grid item xs={12} sm={12} lg={8} md={12} xxl={8}>
           <BlogsList />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={12} lg={4} md={12} xxl={4}>
           <BlogCategorySelection />
         </Grid>
       </Grid>

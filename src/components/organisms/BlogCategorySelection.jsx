@@ -4,14 +4,23 @@ import styled from "@emotion/styled";
 import { Typography } from "../atoms/Typography";
 import { Button } from "../atoms/Button";
 
-const StyledBlogCategorySelection = styled(Paper)({
+const StyledBlogCategorySelection = styled(Paper)(({ theme }) => ({
+  [theme.breakpoints.up("sm")]: {
+    paddingInline: 110,
+  },
+  [theme.breakpoints.down("sm")]: {
+    paddingInline: 15,
+  },
+  [theme.breakpoints.up("md")]: {
+    paddingInline: 0,
+  },
   display: "flex",
   padding: 10,
   flexDirection: "column",
   position: "sticky",
   top: 0,
   right: 0,
-});
+}));
 
 const categoriesList = [
   "Science",

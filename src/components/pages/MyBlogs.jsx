@@ -1,16 +1,18 @@
-import { Paper } from "../molecules/Paper";
 import React from "react";
-import { Typography } from "../atoms/Typography";
-import { Stack } from "../atoms/Stack";
+import { MyBlogsList } from "../organisms/MyBlogsList";
+import { Grid } from "@mui/material";
+import { AppBar } from "../organisms/AppBar";
 
 const MyBlogs = () => {
   return (
-    <Paper elevation={0}>
-      <Stack>
-        <Typography title="Welcome ToDo WebPage" />
-        <Typography title="Manage your todos" variant="h6" />
-      </Stack>
-    </Paper>
+    <>
+      <AppBar />
+      <Grid container>
+        <Grid item lg={12} xxl={12} md={12} sm={12} xs={12}>
+          <MyBlogsList />
+        </Grid>
+      </Grid>
+    </>
   );
 };
 
