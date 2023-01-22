@@ -1,11 +1,12 @@
 import { Typography } from "../atoms/Typography";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { ToolBar } from "../molecules/ToolBar";
 import { AppBar as MuiAppBar } from "../molecules/AppBar";
 import { Button } from "../atoms/Button";
 import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
-// import { AuthContext } from "../../hooks/AuthContext";
+import { useCreateNewBlogs } from "../../api/mutations/useCreateNewBlogs";
+import { AuthContext } from "../../hooks/AuthContext";
 
 const StyledHeaderTitle = styled(Typography)(({ theme }) => ({
   flexGrow: 1,
@@ -20,10 +21,27 @@ const StyledHeaderTitle = styled(Typography)(({ theme }) => ({
   color: "rgba(0,0,0,0.8)",
 }));
 
-export const AppBar = (props) => {
+export const AppBar = ({
+  handleSubmit,
+  showPublishButton,
+  handleShowPublishButton,
+  ...props
+}) => {
   const navigate = useNavigate();
-  // const { isAuthenticated, onLogout } = useContext(AuthContext);
-  const isAuthenticated = false;
+  const { isAuthenticated, onLogout, username } = useContext(AuthContext);
+
+  const { mutate } = useCreateNewBlogs();
+
+  const onPublishHander = (data) => {
+    console.log("data~~~~~>", data);
+    let updatedData = { username: username, ...data };
+    console.log("updataed data~~~~~~~~~~~~>", updatedData);
+    mutate(data, {
+      onSuccess: (datas) => {
+        navigate("/");
+      },
+    });
+  };
 
   return (
     <MuiAppBar color="transparent" position="static">
@@ -38,21 +56,24 @@ export const AppBar = (props) => {
           color="inherit"
           variant="outlined"
           onClick={() => {
-            navigate("/createNewBlog");
+            if (isAuthenticated) {
+              handleShowPublishButton(navigate("/createNewBlog"));
+            } else {
+              navigate("/login");
+            }
           }}
         >
           Write
         </Button>
-        {isAuthenticated && (
+
+        {isAuthenticated && showPublishButton && (
           <Button
             sx={{ textTransform: "None", borderRadius: 10 }}
             size="small"
             disableRipple
             color="success"
             variant="outlined"
-            onClick={() => {
-              console.log("api call to push data");
-            }}
+            onClick={handleSubmit?.(onPublishHander)}
           >
             Publish
           </Button>
@@ -83,9 +104,13 @@ export const AppBar = (props) => {
         )}
         {isAuthenticated && (
           <Button
-            buttonContent="Logout"
-            onClick={() => console.log("Logging out")}
-          />
+            sx={{ textTransform: "None" }}
+            size="small"
+            color="inherit"
+            onClick={onLogout}
+          >
+            Logout
+          </Button>
         )}
         {props.children}
       </ToolBar>

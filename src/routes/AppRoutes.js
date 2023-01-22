@@ -1,5 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 import { lazy } from "react";
+
+import { AuthContext } from "../hooks/AuthContext";
+import { useContext } from "react";
+
 const HomePage = lazy(() => import("../components/pages/HomePage"));
 const BlogDetailsPage = lazy(() =>
   import("../components/pages/BlogDetailsPage")
@@ -12,14 +16,21 @@ const SignupPage = lazy(() => import("../components/pages/SignupPage"));
 const MyBlogs = lazy(() => import("../components/pages/MyBlogs"));
 
 export const AppRoutes = () => {
+  const { isAuthenticated } = useContext(AuthContext);
+
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/signup" element={<SignupPage />} />
+      {!isAuthenticated && <Route path="/login" element={<LoginPage />} />}
+      {!isAuthenticated && <Route path="/signup" element={<SignupPage />} />}
       <Route path="/blog/:blogId" element={<BlogDetailsPage />} />
-      <Route path="/user/:userName" element={<MyBlogs />} />
-      <Route path="/createNewBlog" element={<CreateNewBlogPage />} />
+      {isAuthenticated && (
+        <Route path="/user/:userName" element={<MyBlogs />} />
+      )}
+      {isAuthenticated && (
+        <Route path="/createNewBlog" element={<CreateNewBlogPage />} />
+      )}
+      <Route path="*" element={<HomePage />} />
     </Routes>
   );
 };

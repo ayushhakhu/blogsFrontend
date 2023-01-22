@@ -5,7 +5,7 @@ export const AlertProvider = ({ severity, text, ...props }) => {
   return ReactDOM.createPortal(
     <Alert
       sx={{ position: "fixed", left: 0, bottom: 0, width: 200 }}
-      severity={severity}
+    severity={severity}
       {...props}
     >
       {text}

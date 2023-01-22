@@ -5,16 +5,20 @@ export const AuthContext = createContext({
   token: null,
   onLogin: (tokenValue) => {},
   onLogout: () => {},
+  username: "",
 });
 
 export const AuthContextProvider = (props) => {
   const [isAuthenticated, setisAuthenticated] = useState(
     sessionStorage.getItem("token")
   );
-  const [token, settoken] = useState(sessionStorage.getItem("token"));
 
-  const onLogin = (tokenValue) => {
+  const [token, settoken] = useState(sessionStorage.getItem("token"));
+  const [username, setusername] = useState("");
+
+  const onLogin = (tokenValue, username) => {
     setisAuthenticated(true);
+    setusername(username);
     sessionStorage.setItem("token", tokenValue);
     settoken(tokenValue);
   };
@@ -26,7 +30,15 @@ export const AuthContextProvider = (props) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, token, onLogin, onLogout }}>
+    <AuthContext.Provider
+      value={{
+        isAuthenticated,
+        token,
+        onLogin,
+        onLogout,
+        username,
+      }}
+    >
       {props.children}
     </AuthContext.Provider>
   );
