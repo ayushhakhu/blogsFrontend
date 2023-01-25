@@ -48,16 +48,21 @@ const StyledBlogCategory = styled(Typography)({
   paddingInline: "5px !important",
 });
 
-const StyledBlogDetails = styled(Typography)({
+const StyledBlogDetails = styled(Typography)(({ theme }) => ({
   overflow: "hidden",
-  maxWidth: "inherit",
+  [theme.breakpoints.down("md")]: {
+    maxWidth: 300,
+  },
+  [theme.breakpoints.up("md")]: {
+    maxWidth: 600,
+  },
   maxHeight: 50,
   overflowWrap: "break-word",
   fontSize: 16,
   fontWeight: 400,
   fontFamily: `sohne, "Helvetica Neue", Helvetica, Arial, sans-serif`,
   color: "rgba(117, 117, 117, 1)",
-});
+}));
 
 const StyledItem = styled(Paper)(({ theme }) => ({
   [theme.breakpoints.up("sm")]: {

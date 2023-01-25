@@ -44,6 +44,8 @@ export const BlogsDetails = ({
     setshowAlert(true);
   };
 
+  console.log("data~~~~~~~~~>", data);
+
   if (isLoading) {
     return <>Loading..........</>;
   }
@@ -53,11 +55,11 @@ export const BlogsDetails = ({
       <StyledPaper elevation={0}>
         <header style={{ display: "flex", justifyContent: "space-between" }}>
           <div style={{ display: "flex", justifyContent: "space-around" }}>
-            <Avatar
+            {/* <Avatar
               alt="username"
               {...stringAvatar(`${data?.blogAuthor?.username?.split("@")[0]}`)}
-            />
-            {/* <Avatar alt="username" {...stringAvatar(`ayush.hakhu`)} /> */}
+            /> */}
+            <Avatar alt="username" {...stringAvatar(`ayush.hakhu`)} />
 
             <Typography
               sx={{
@@ -69,8 +71,8 @@ export const BlogsDetails = ({
               }}
               variant="subtitle1"
             >
-              {/* {`ayush.hakhu`} */}
-              {`${data?.blogAuthor?.username?.split("@")[0]}`}
+              {`ayush.hakhu`}
+              {/* {`${data?.blogAuthor?.username?.split("@")[0]}`} */}
             </Typography>
           </div>
           <div className="media_Links">

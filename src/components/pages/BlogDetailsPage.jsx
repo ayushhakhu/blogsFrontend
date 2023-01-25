@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { BlogsDetails } from "../organisms/BlogsDetails";
 import { UserDetails } from "../organisms/UserDetails";
 import { Grid } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { AppBar } from "../organisms/AppBar";
 import { useFetchBlog } from "../../api/queries/useFetchBlog";
+import { BlogComments } from "../organisms/BlogComments";
 
 const BlogDetailsPage = (props) => {
   let params = useParams();
@@ -13,6 +14,8 @@ const BlogDetailsPage = (props) => {
 
   const { data, isSuccess, isError, isLoading } = useFetchBlog(blogId);
 
+  const memoMizedData = useMemo(() => data?.data, [data]);
+
   return (
     <>
       <AppBar />
@@ -20,7 +23,7 @@ const BlogDetailsPage = (props) => {
         <Grid item xs={12} sm={12} lg={8} md={8} xxl={8}>
           <BlogsDetails
             blogId={blogId}
-            data={data?.data}
+            data={memoMizedData}
             isSuccess={isSuccess}
             isError={isError}
             isLoading={isLoading}
@@ -35,6 +38,7 @@ const BlogDetailsPage = (props) => {
           />
         </Grid>
       </Grid>
+      <BlogComments />
     </>
   );
 };

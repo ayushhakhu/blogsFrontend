@@ -50,10 +50,15 @@ export const UserDetails = ({ data, isSuccess, isError, isLoading }) => {
             marginInline: 10,
           }}
         >
-          <Avatar
+          {/* <Avatar
             sx={{ width: 88, height: 88 }}
             alt="username"
             {...stringAvatar(`${data?.blogAuthor?.username.split("@")[0]}`)}
+          /> */}
+          <Avatar
+            sx={{ width: 88, height: 88 }}
+            alt="username"
+            {...stringAvatar(`ayush.hakhu`)}
           />
           <Typography
             sx={{
