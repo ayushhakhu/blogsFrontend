@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { Paper } from "../molecules/Paper";
 import { Typography } from "../atoms/Typography";
-import { Avatar, Badge } from "@mui/material";
-import { IconButton } from "../atoms/IconButton";
-import CommentIcon from "@mui/icons-material/Comment";
+import { Avatar } from "@mui/material";
+import Chip from "@mui/material/Chip";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { BlogCommentsReplies } from "../organisms/BlogCommentsReplies";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   display: "flex",
@@ -25,78 +27,121 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 
 const stringAvatar = (name) => {
   return {
-    children: `${name.split(" ")[0][0]}${name.split(".")[1][0]}`,
+    children: `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`,
   };
 };
 
 const comments = [
   {
     _id: "63d0fccf29741b7161396231",
-    blogReview: "Nice Prod - 1",
+    blogReview:
+      "Very Big review comments Very Big review commentsVery Big review commentsVery Big review commentsVery Big review commentsVery Big review commentsVery Big review commentsVery Big review comments1Very Big review comments Very Big review commentsVery Big review commentsVery Big review commentsVery Big review commentsVery Big review commentsVery Big review commentsVery Big review comments1",
     reviewCommentsCount: 0,
+    username: "Ayush Hakhu",
   },
   {
     _id: "63d0fccf29741b7161396231",
     blogReview: "Nice Prod - 2",
     reviewCommentsCount: 10,
+    username: "Test User",
   },
   {
     _id: "63d0fccf29741b7161396231",
     blogReview: "Nice Prod - 3",
     reviewCommentsCount: 0,
+    username: "One India",
   },
 ];
 
+const StyledBlogCommentsAndReviews = styled(Typography)(({ theme }) => ({
+  overflow: "hidden",
+  [theme.breakpoints.down("md")]: {
+    maxWidth: 300,
+  },
+  [theme.breakpoints.up("md")]: {
+    maxWidth: 800,
+  },
+  overflowWrap: "break-word",
+  fontSize: 15,
+  color: "rgba(41, 41, 41, 1)",
+  fontFamily: `sohne, "Helvetica Neue", Helvetica, Arial, sans-serif`,
+  fontWeight: 200,
+  paddingInline: 18,
+  marginTop: 10,
+}));
+
 export const BlogComments = () => {
+  const [replyButton, setreplyButton] = useState(false);
+  const onClickReply = () => {
+    setreplyButton((prevState) => !prevState);
+  };
   return (
     <StyledPaper elevation={0}>
       {comments.map((item) => (
         <div
+          className="avatarAndUsername"
           style={{
             display: "flex",
-            flexDirection: "column",
-            paddingBlock: 10,
-            alignItems: "flex-start",
+            flexDirection: "row",
+            alignContent: "center",
+            marginBlock: 5,
           }}
         >
-          {/* <Avatar
-              alt="username"
-              {...stringAvatar(`${data?.blogAuthor?.username?.split("@")[0]}`)}
-            /> */}
           <Avatar
             sx={{
-              width: 24,
-              height: 24,
-              marginInlineStart: 2,
               marginBottom: 2,
             }}
             alt="username"
-            {...stringAvatar(`ayush.hakhu`)}
+            {...stringAvatar(item.username)}
           />
-
-          <Typography
-            sx={{
-              fontSize: 15,
-              color: "rgba(41, 41, 41, 1)",
-              fontFamily: `sohne, "Helvetica Neue", Helvetica, Arial, sans-serif`,
-              fontWeight: 400,
-              paddingInline: 2,
+          <div
+            className="commentsAndReviewas"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignContent: "center",
             }}
-            variant="body1"
           >
-            {item.blogReview}
-          </Typography>
-          {item.reviewCommentsCount > 0 && (
             <Typography
               sx={{
+                fontSize: 15,
+                color: "rgba(41, 41, 41, 1)",
+                fontFamily: `sohne, "Helvetica Neue", Helvetica, Arial, sans-serif`,
+                fontWeight: 700,
                 paddingInline: 2,
-                fontFamily: `source-serif-pro, Georgia, Cambria, "Times New Roman", Times, serif`,
               }}
-              variant="body1"
+              variant="h6"
             >
-              {`Comments - ${item.reviewCommentsCount}`}
+              {item.username}
             </Typography>
-          )}
+            <StyledBlogCommentsAndReviews variant="body1">
+              {item.blogReview}
+            </StyledBlogCommentsAndReviews>
+            {item.reviewCommentsCount > 0 && (
+              <>
+                <Chip
+                  size="small"
+                  label={`${item.reviewCommentsCount} replies`}
+                  variant="outlined"
+                  onClick={onClickReply}
+                  color="primary"
+                  sx={{
+                    color: "rgba(41, 41, 41, 1)",
+                    fontFamily: `sohne, "Helvetica Neue", Helvetica, Arial, sans-serif`,
+                    fontWeight: 200,
+                    marginTop: 2,
+                    marginInline: 2,
+                    width: 100,
+                    border: 0,
+                  }}
+                  icon={
+                    replyButton ? <ExpandMoreIcon /> : <KeyboardArrowUpIcon />
+                  }
+                />
+                {replyButton && <BlogCommentsReplies />}
+              </>
+            )}
+          </div>
         </div>
       ))}
     </StyledPaper>
