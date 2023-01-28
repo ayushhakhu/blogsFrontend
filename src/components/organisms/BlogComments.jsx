@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import styled from "@emotion/styled";
 import { Paper } from "../molecules/Paper";
 import { Typography } from "../atoms/Typography";
-import { Avatar } from "@mui/material";
-import Chip from "@mui/material/Chip";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { BlogCommentsReplies } from "../organisms/BlogCommentsReplies";
+import { Avatar, Box } from "@mui/material";
+import { AddCommentField } from "../molecules/AddCommentField";
+import { BlogCommentsAndReviewsActions } from "../molecules/BlogCommentsAndReviewsActions";
+import { ShowCommentReplies } from "../molecules/ShowCommentReplies";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   display: "flex",
@@ -40,13 +39,13 @@ const comments = [
     username: "Ayush Hakhu",
   },
   {
-    _id: "63d0fccf29741b7161396231",
+    _id: "63d0fccf29741b7161396232",
     blogReview: "Nice Prod - 2",
     reviewCommentsCount: 10,
     username: "Test User",
   },
   {
-    _id: "63d0fccf29741b7161396231",
+    _id: "63d0fccf29741b7161396233",
     blogReview: "Nice Prod - 3",
     reviewCommentsCount: 0,
     username: "One India",
@@ -70,23 +69,40 @@ const StyledBlogCommentsAndReviews = styled(Typography)(({ theme }) => ({
   marginTop: 10,
 }));
 
+const StyledCommentsSection = styled(Box)(() => ({
+  display: "flex",
+  flexDirection: "row",
+  alignContent: "center",
+  marginBlock: 5,
+}));
+
+const StyledCommentDetails = styled(Box)(() => ({
+  display: "flex",
+  flexDirection: "column",
+  alignContent: "center",
+}));
+
+const StyledCommentsUsername = styled(Typography)(() => ({
+  fontSize: 15,
+  color: "rgba(41, 41, 41, 1)",
+  fontFamily: `sohne, "Helvetica Neue", Helvetica, Arial, sans-serif`,
+  fontWeight: 700,
+  paddingInline: 15,
+}));
+
 export const BlogComments = () => {
   const [replyButton, setreplyButton] = useState(false);
-  const onClickReply = () => {
+  const [showReplyIdButton, setshowReplyIdButton] = useState(null);
+
+  const onClickReply = useCallback(() => {
     setreplyButton((prevState) => !prevState);
-  };
+  }, []);
+
   return (
     <StyledPaper elevation={0}>
+      <AddCommentField label="Comment" placeholder="Add a comment..." />
       {comments.map((item) => (
-        <div
-          className="avatarAndUsername"
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignContent: "center",
-            marginBlock: 5,
-          }}
-        >
+        <StyledCommentsSection>
           <Avatar
             sx={{
               marginBottom: 2,
@@ -94,55 +110,30 @@ export const BlogComments = () => {
             alt="username"
             {...stringAvatar(item.username)}
           />
-          <div
-            className="commentsAndReviewas"
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignContent: "center",
-            }}
-          >
-            <Typography
-              sx={{
-                fontSize: 15,
-                color: "rgba(41, 41, 41, 1)",
-                fontFamily: `sohne, "Helvetica Neue", Helvetica, Arial, sans-serif`,
-                fontWeight: 700,
-                paddingInline: 2,
-              }}
-              variant="h6"
-            >
+          <StyledCommentDetails>
+            <StyledCommentsUsername variant="h6">
               {item.username}
-            </Typography>
+            </StyledCommentsUsername>
             <StyledBlogCommentsAndReviews variant="body1">
               {item.blogReview}
             </StyledBlogCommentsAndReviews>
-            {item.reviewCommentsCount > 0 && (
-              <>
-                <Chip
-                  size="small"
-                  label={`${item.reviewCommentsCount} replies`}
-                  variant="outlined"
-                  onClick={onClickReply}
-                  color="primary"
-                  sx={{
-                    color: "rgba(41, 41, 41, 1)",
-                    fontFamily: `sohne, "Helvetica Neue", Helvetica, Arial, sans-serif`,
-                    fontWeight: 200,
-                    marginTop: 2,
-                    marginInline: 2,
-                    width: 100,
-                    border: 0,
-                  }}
-                  icon={
-                    replyButton ? <ExpandMoreIcon /> : <KeyboardArrowUpIcon />
-                  }
-                />
-                {replyButton && <BlogCommentsReplies />}
-              </>
+            <BlogCommentsAndReviewsActions
+              setshowReplyIdButton={setshowReplyIdButton}
+              showReplyIdButton={showReplyIdButton}
+              id={item._id}
+            />
+            {showReplyIdButton === item._id && (
+              <AddCommentField label="Reply" placeholder="Add a reply..." />
             )}
-          </div>
-        </div>
+            {item.reviewCommentsCount > 0 && (
+              <ShowCommentReplies
+                replyButton={replyButton}
+                onClickReply={onClickReply}
+                reviewCommentsCount={item.reviewCommentsCount}
+              />
+            )}
+          </StyledCommentDetails>
+        </StyledCommentsSection>
       ))}
     </StyledPaper>
   );

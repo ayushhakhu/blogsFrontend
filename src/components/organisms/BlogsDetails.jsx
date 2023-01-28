@@ -9,7 +9,7 @@ import styled from "@emotion/styled";
 
 const stringAvatar = (name) => {
   return {
-    children: `${name.split(" ")[0][0]}${name.split(".")[1][0]}`,
+    children: `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`,
   };
 };
 
@@ -55,11 +55,12 @@ export const BlogsDetails = ({
       <StyledPaper elevation={0}>
         <header style={{ display: "flex", justifyContent: "space-between" }}>
           <div style={{ display: "flex", justifyContent: "space-around" }}>
-            {/* <Avatar
+            <Avatar
               alt="username"
-              {...stringAvatar(`${data?.blogAuthor?.username?.split("@")[0]}`)}
-            /> */}
-            <Avatar alt="username" {...stringAvatar(`ayush.hakhu`)} />
+              {...stringAvatar(
+                `${data?.blogAuthor?.firstName} ${data?.blogAuthor?.lastName}`
+              )}
+            />
 
             <Typography
               sx={{
@@ -71,8 +72,7 @@ export const BlogsDetails = ({
               }}
               variant="subtitle1"
             >
-              {`ayush.hakhu`}
-              {/* {`${data?.blogAuthor?.username?.split("@")[0]}`} */}
+              {`${data?.blogAuthor?.firstName} ${data?.blogAuthor?.lastName}`}
             </Typography>
           </div>
           <div className="media_Links">

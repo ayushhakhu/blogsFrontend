@@ -28,7 +28,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 export const UserDetails = ({ data, isSuccess, isError, isLoading }) => {
   const stringAvatar = (name) => {
     return {
-      children: `${name.split(" ")[0][0]}${name.split(".")[1][0]}`,
+      children: `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`,
     };
   };
 
@@ -50,16 +50,14 @@ export const UserDetails = ({ data, isSuccess, isError, isLoading }) => {
             marginInline: 10,
           }}
         >
-          {/* <Avatar
-            sx={{ width: 88, height: 88 }}
-            alt="username"
-            {...stringAvatar(`${data?.blogAuthor?.username.split("@")[0]}`)}
-          /> */}
           <Avatar
             sx={{ width: 88, height: 88 }}
             alt="username"
-            {...stringAvatar(`ayush.hakhu`)}
+            {...stringAvatar(
+              `${data?.blogAuthor?.firstName} ${data?.blogAuthor?.lastName}`
+            )}
           />
+
           <Typography
             sx={{
               fontFamily: `sohne, "Helvetica Neue", Helvetica, Arial, sans-serif`,

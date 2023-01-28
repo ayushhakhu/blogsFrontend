@@ -17,10 +17,23 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 export const BlogsList = (props) => {
   const { data, isSuccess, isError, error, status } = useFetchBlogs();
 
-  console.log("~~~~~~~~~~>", status);
+  console.log("~~~~~~~~~~>", data?.data.length);
 
   if (status === "error") {
     return <AlertProvider severity="info" text={error.message} />;
+  }
+
+  if (status === "success" && data?.data.length === 0) {
+    return (
+      <StyledPaper elevation={0}>
+        <Typography
+          sx={{ display: "flex", justifyContent: "center", padding: 10 }}
+          variant="body1"
+        >
+          No Data Available
+        </Typography>
+      </StyledPaper>
+    );
   }
 
   if (isSuccess && !isError) {
