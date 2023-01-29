@@ -44,8 +44,6 @@ export const BlogsDetails = ({
     setshowAlert(true);
   };
 
-  console.log("data~~~~~~~~~>", data);
-
   if (isLoading) {
     return <>Loading..........</>;
   }

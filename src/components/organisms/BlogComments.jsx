@@ -6,6 +6,10 @@ import { Avatar, Box } from "@mui/material";
 import { AddCommentField } from "../molecules/AddCommentField";
 import { BlogCommentsAndReviewsActions } from "../molecules/BlogCommentsAndReviewsActions";
 import { ShowCommentReplies } from "../molecules/ShowCommentReplies";
+import { useFetchBlogReviews } from "../../api/queries/useFetchBlogReviews";
+import AlertProvider from "../atoms/AlertProvider";
+import { usePostBlogReview } from "../../api/mutations/usePostBlogReview";
+import { usePostBlogReviewComments } from "../../api/mutations/usePostBlogReviewComments";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   display: "flex",
@@ -29,28 +33,6 @@ const stringAvatar = (name) => {
     children: `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`,
   };
 };
-
-const comments = [
-  {
-    _id: "63d0fccf29741b7161396231",
-    blogReview:
-      "Very Big review comments Very Big review commentsVery Big review commentsVery Big review commentsVery Big review commentsVery Big review commentsVery Big review commentsVery Big review comments1Very Big review comments Very Big review commentsVery Big review commentsVery Big review commentsVery Big review commentsVery Big review commentsVery Big review commentsVery Big review comments1",
-    reviewCommentsCount: 0,
-    username: "Ayush Hakhu",
-  },
-  {
-    _id: "63d0fccf29741b7161396232",
-    blogReview: "Nice Prod - 2",
-    reviewCommentsCount: 10,
-    username: "Test User",
-  },
-  {
-    _id: "63d0fccf29741b7161396233",
-    blogReview: "Nice Prod - 3",
-    reviewCommentsCount: 0,
-    username: "One India",
-  },
-];
 
 const StyledBlogCommentsAndReviews = styled(Typography)(({ theme }) => ({
   overflow: "hidden",
@@ -90,51 +72,99 @@ const StyledCommentsUsername = styled(Typography)(() => ({
   paddingInline: 15,
 }));
 
-export const BlogComments = () => {
+export const BlogComments = ({ blogId }) => {
   const [replyButton, setreplyButton] = useState(false);
   const [showReplyIdButton, setshowReplyIdButton] = useState(null);
+
+  const { isSuccess, isError, data } = useFetchBlogReviews(blogId);
+
+  const {
+    isSuccess: isPostBlogReviewSucess,
+    data: postBlogReviewsData,
+    isError: isPostBlogReviewError,
+    mutate: postBlogReviewMethod,
+  } = usePostBlogReview();
+  const {
+    isSuccess: isPostBlogReviewCommentSucess,
+    data: postBlogReviewsCommentData,
+    isError: isPostBlogReviewCommentError,
+    mutate: postBlogReviewCommentsMethod,
+  } = usePostBlogReviewComments();
 
   const onClickReply = useCallback(() => {
     setreplyButton((prevState) => !prevState);
   }, []);
 
-  return (
-    <StyledPaper elevation={0}>
-      <AddCommentField label="Comment" placeholder="Add a comment..." />
-      {comments.map((item) => (
-        <StyledCommentsSection>
-          <Avatar
-            sx={{
-              marginBottom: 2,
-            }}
-            alt="username"
-            {...stringAvatar(item.username)}
-          />
-          <StyledCommentDetails>
-            <StyledCommentsUsername variant="h6">
-              {item.username}
-            </StyledCommentsUsername>
-            <StyledBlogCommentsAndReviews variant="body1">
-              {item.blogReview}
-            </StyledBlogCommentsAndReviews>
-            <BlogCommentsAndReviewsActions
-              setshowReplyIdButton={setshowReplyIdButton}
-              showReplyIdButton={showReplyIdButton}
-              id={item._id}
+  if (isError) {
+    return (
+      <AlertProvider severity={"warning"} text="Unable to fetch comments" />
+    );
+  }
+  if (isSuccess && data?.data.length === 0) {
+    return (
+      <StyledPaper elevation={0}>
+        <Typography variant="body1">No Comments Add a new One</Typography>
+        <AddCommentField
+          blogId={blogId}
+          label="Comment"
+          placeholder="Add a comment..."
+          onSucessClick={postBlogReviewMethod}
+        />
+      </StyledPaper>
+    );
+  }
+
+  if (isSuccess && data.data) {
+    return (
+      <StyledPaper elevation={0}>
+        <AddCommentField
+          blogId={blogId}
+          label="Comment"
+          placeholder="Add a comment..."
+          onSucessClick={postBlogReviewMethod}
+        />
+        {data?.data.map((item) => (
+          <StyledCommentsSection>
+            <Avatar
+              sx={{
+                marginBottom: 2,
+              }}
+              alt="username"
+              {...stringAvatar(`${item.user.firstName} ${item.user.lastName}`)}
             />
-            {showReplyIdButton === item._id && (
-              <AddCommentField label="Reply" placeholder="Add a reply..." />
-            )}
-            {item.reviewCommentsCount > 0 && (
-              <ShowCommentReplies
-                replyButton={replyButton}
-                onClickReply={onClickReply}
-                reviewCommentsCount={item.reviewCommentsCount}
+            <StyledCommentDetails>
+              <StyledCommentsUsername variant="h6">
+                {`${item.user.firstName} ${item.user.lastName}`}
+              </StyledCommentsUsername>
+              <StyledBlogCommentsAndReviews variant="body1">
+                {item.blogReview}
+              </StyledBlogCommentsAndReviews>
+              <BlogCommentsAndReviewsActions
+                setshowReplyIdButton={setshowReplyIdButton}
+                showReplyIdButton={showReplyIdButton}
+                id={item._id}
               />
-            )}
-          </StyledCommentDetails>
-        </StyledCommentsSection>
-      ))}
-    </StyledPaper>
-  );
+              {showReplyIdButton === item._id && (
+                <AddCommentField
+                  reviewId={showReplyIdButton}
+                  blogId={blogId}
+                  label="Reply"
+                  placeholder="Add a reply..."
+                  onSucessClick={postBlogReviewCommentsMethod}
+                />
+              )}
+              {item.reviewCommentsCount > 0 && (
+                <ShowCommentReplies
+                  reviewId={item._id}
+                  replyButton={replyButton}
+                  onClickReply={onClickReply}
+                  reviewCommentsCount={item.reviewCommentsCount}
+                />
+              )}
+            </StyledCommentDetails>
+          </StyledCommentsSection>
+        ))}
+      </StyledPaper>
+    );
+  }
 };

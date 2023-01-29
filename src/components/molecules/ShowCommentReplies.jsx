@@ -8,6 +8,7 @@ export const ShowCommentReplies = ({
   reviewCommentsCount,
   onClickReply,
   replyButton,
+  reviewId = "",
 }) => {
   return (
     <>
@@ -28,7 +29,7 @@ export const ShowCommentReplies = ({
         }}
         icon={replyButton ? <ExpandMoreIcon /> : <KeyboardArrowUpIcon />}
       />
-      {replyButton && <BlogCommentsReplies />}
+      {replyButton && <BlogCommentsReplies reviewId={reviewId} />}
     </>
   );
 };

@@ -1,16 +1,65 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { TextField } from "../atoms/TextField";
 import Chip from "@mui/material/Chip";
+import { Controller, useForm } from "react-hook-form";
 
-export const AddCommentField = ({ placeholder, label, ...props }) => {
+export const AddCommentField = ({
+  placeholder,
+  label,
+  blogId = "",
+  reviewId = "",
+  onSucessClick,
+  ...props
+}) => {
   const [showCommentButton, setShowCommentButton] = useState(false);
+
+  const setUnsetChipButtons = () => {
+    if (!showCommentButton) {
+      setShowCommentButton(true);
+    } else {
+      setShowCommentButton(false);
+    }
+  };
+
+  const { control, getValues } = useForm({
+    defaultValues: {
+      Comment: "",
+      Reply: "",
+    },
+  });
+
+  const onClickButton = () => {
+    if (label === "Comment") {
+      if (getValues("Comment")) {
+        let payload = { blogReview: getValues("Comment") };
+        onSucessClick({ blogId: blogId, payload: payload });
+      }
+    } else {
+      if (getValues("Reply")) {
+        let payload = { blogReviewComment: getValues("Reply") };
+
+        onSucessClick({ reviewId: reviewId, payload: payload });
+      }
+    }
+  };
 
   return (
     <>
-      <TextField
-        onClick={() => setShowCommentButton((prevState) => !prevState)}
-        placeholder={placeholder}
-        sx={{ width: 500, marginBottom: 2 }}
+      <Controller
+        name={label}
+        control={control}
+        rules={{ minLength: { value: 1, message: "This is a required Field" } }}
+        render={({ field: { onChange } }) => (
+          <TextField
+            required
+            onChange={(event) => {
+              onChange(event.target.value);
+            }}
+            onClick={setUnsetChipButtons}
+            placeholder={placeholder}
+            sx={{ width: 500, marginBottom: 2 }}
+          />
+        )}
       />
       {showCommentButton && (
         <div
@@ -24,7 +73,7 @@ export const AddCommentField = ({ placeholder, label, ...props }) => {
           <Chip
             label={"Cancel"}
             variant="outlined"
-            onClick={() => setShowCommentButton((prevState) => !prevState)}
+            onClick={setUnsetChipButtons}
             color="primary"
             sx={{
               color: "rgba(41, 41, 41, 1)",
@@ -37,9 +86,10 @@ export const AddCommentField = ({ placeholder, label, ...props }) => {
             }}
           />
           <Chip
+            type="submit"
             label={label}
             variant="outlined"
-            onClick={() => console.log("Clicked on Comment Button")}
+            onClick={onClickButton}
             color="primary"
             sx={{
               color: "rgba(41, 41, 41, 1)",

@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { Paper } from "../molecules/Paper";
 import { Typography } from "../atoms/Typography";
 import { Avatar } from "@mui/material";
+import { useFetchBlogReviewsComments } from "../../api/queries/useFetchBlogReviewsComments";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   display: "flex",
@@ -18,21 +19,6 @@ const stringAvatar = (name) => {
     children: `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`,
   };
 };
-
-const blogReviewComments = [
-  {
-    _id: "1",
-    blogReviewComment: "For Valuablse feedback",
-    blogReviewId: "22",
-    username: "Test User",
-  },
-  {
-    _id: "2",
-    blogReviewComment: "Appreciate feedback",
-    blogReviewId: "22",
-    username: "TAest AUser",
-  },
-];
 
 const StyledBlogCommentsAndReviews = styled(Typography)(({ theme }) => ({
   overflow: "hidden",
@@ -51,55 +37,80 @@ const StyledBlogCommentsAndReviews = styled(Typography)(({ theme }) => ({
   marginTop: 10,
 }));
 
-export const BlogCommentsReplies = () => {
-  return (
-    <StyledPaper elevation={0}>
-      {blogReviewComments.map((item) => (
-        <div
-          className="avatarAndUsername"
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignContent: "center",
-            marginBlock: 5,
+export const BlogCommentsReplies = ({ reviewId }) => {
+  console.log("reviewId~~~~~~~~~~~~~~~>", reviewId);
+  const { data, isSuccess, isError, isLoading } =
+    useFetchBlogReviewsComments(reviewId);
+
+  if (isLoading) {
+    return (
+      <StyledPaper elevation={0}>
+        <Typography
+          sx={{
+            fontSize: 15,
+            color: "rgba(41, 41, 41, 1)",
+            fontFamily: `sohne, "Helvetica Neue", Helvetica, Arial, sans-serif`,
+            fontWeight: 700,
+            paddingInline: 2,
           }}
+          variant="h6"
         >
-          <Avatar
-            sx={{
-              marginBottom: 2,
-              padding: 1,
-              width: 12,
-              height: 12,
-            }}
-            alt="username"
-            {...stringAvatar(item.username)}
-          />
+          Loading...
+        </Typography>
+      </StyledPaper>
+    );
+  }
+
+  if (isSuccess && data?.data) {
+    return (
+      <StyledPaper elevation={0}>
+        {data?.data.map((item) => (
           <div
-            className="commentsAndReviewas"
+            className="avatarAndUsername"
             style={{
               display: "flex",
-              flexDirection: "column",
+              flexDirection: "row",
               alignContent: "center",
+              marginBlock: 5,
             }}
           >
-            <Typography
+            <Avatar
               sx={{
-                fontSize: 15,
-                color: "rgba(41, 41, 41, 1)",
-                fontFamily: `sohne, "Helvetica Neue", Helvetica, Arial, sans-serif`,
-                fontWeight: 700,
-                paddingInline: 2,
+                marginBottom: 2,
+                padding: 1,
+                width: 12,
+                height: 12,
               }}
-              variant="h6"
+              alt="username"
+              {...stringAvatar(`${item.user.firstName} ${item.user.lastName}`)}
+            />
+            <div
+              className="commentsAndReviewas"
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignContent: "center",
+              }}
             >
-              {item.username}
-            </Typography>
-            <StyledBlogCommentsAndReviews variant="body1">
-              {item.blogReviewComment}
-            </StyledBlogCommentsAndReviews>
+              <Typography
+                sx={{
+                  fontSize: 15,
+                  color: "rgba(41, 41, 41, 1)",
+                  fontFamily: `sohne, "Helvetica Neue", Helvetica, Arial, sans-serif`,
+                  fontWeight: 700,
+                  paddingInline: 2,
+                }}
+                variant="h6"
+              >
+                {`${item.user.firstName} ${item.user.lastName}`}
+              </Typography>
+              <StyledBlogCommentsAndReviews variant="body1">
+                {item.blogReviewComment}
+              </StyledBlogCommentsAndReviews>
+            </div>
           </div>
-        </div>
-      ))}
-    </StyledPaper>
-  );
+        ))}
+      </StyledPaper>
+    );
+  }
 };

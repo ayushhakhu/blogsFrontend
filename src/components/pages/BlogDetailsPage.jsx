@@ -38,7 +38,7 @@ const BlogDetailsPage = (props) => {
           />
         </Grid>
       </Grid>
-      <BlogComments />
+      <BlogComments blogId={blogId} />
     </>
   );
 };
