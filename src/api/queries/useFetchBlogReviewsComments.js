@@ -6,5 +6,8 @@ export const useFetchBlogReviewsComments = (reviewId) => {
     return axiosInstance.get(`/blog_reviews_comments/${reviewId}?page=1`);
   };
 
-  return useBaseQuery(`blogReviewsComments`, fetchBlogReviewsComments);
+  return useBaseQuery(
+    `blogReviewsComments${reviewId}`,
+    fetchBlogReviewsComments
+  );
 };

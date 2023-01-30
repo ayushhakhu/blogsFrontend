@@ -1,15 +1,18 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
-import { Paper } from "../molecules/Paper";
-import { Typography } from "../atoms/Typography";
+import { Paper } from "../../molecules/Paper";
+import { Typography } from "../../atoms/Typography";
 import { Avatar, Box } from "@mui/material";
-import { AddCommentField } from "../molecules/AddCommentField";
-import { BlogCommentsAndReviewsActions } from "../molecules/BlogCommentsAndReviewsActions";
-import { ShowCommentReplies } from "../molecules/ShowCommentReplies";
-import { useFetchBlogReviews } from "../../api/queries/useFetchBlogReviews";
-import AlertProvider from "../atoms/AlertProvider";
-import { usePostBlogReview } from "../../api/mutations/usePostBlogReview";
-import { usePostBlogReviewComments } from "../../api/mutations/usePostBlogReviewComments";
+import { AddCommentField } from "../../molecules/AddCommentField";
+import { BlogCommentsAndReviewsActions } from "../../molecules/BlogCommentsAndReviewsActions";
+import { useFetchBlogReviews } from "../../../api/queries/useFetchBlogReviews";
+import AlertProvider from "../../atoms/AlertProvider";
+import { usePostBlogReview } from "../../../api/mutations/usePostBlogReview";
+import { usePostBlogReviewComments } from "../../../api/mutations/usePostBlogReviewComments";
+import Chip from "@mui/material/Chip";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { BlogCommentsReplies } from "./BlogCommentsReplies";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   display: "flex",
@@ -73,27 +76,22 @@ const StyledCommentsUsername = styled(Typography)(() => ({
 }));
 
 export const BlogComments = ({ blogId }) => {
-  const [replyButton, setreplyButton] = useState(false);
   const [showReplyIdButton, setshowReplyIdButton] = useState(null);
+  const [repliesButtonState, setrepliesButtonState] = useState(false);
+  const [reviewId, setReviewId] = useState(null);
 
   const { isSuccess, isError, data } = useFetchBlogReviews(blogId);
 
   const {
     isSuccess: isPostBlogReviewSucess,
-    data: postBlogReviewsData,
     isError: isPostBlogReviewError,
     mutate: postBlogReviewMethod,
   } = usePostBlogReview();
   const {
     isSuccess: isPostBlogReviewCommentSucess,
-    data: postBlogReviewsCommentData,
     isError: isPostBlogReviewCommentError,
     mutate: postBlogReviewCommentsMethod,
   } = usePostBlogReviewComments();
-
-  const onClickReply = useCallback(() => {
-    setreplyButton((prevState) => !prevState);
-  }, []);
 
   if (isError) {
     return (
@@ -108,6 +106,8 @@ export const BlogComments = ({ blogId }) => {
           blogId={blogId}
           label="Comment"
           placeholder="Add a comment..."
+          isPostBlogReviewSucess={isPostBlogReviewSucess}
+          isPostBlogReviewError={isPostBlogReviewError}
           onSucessClick={postBlogReviewMethod}
         />
       </StyledPaper>
@@ -119,6 +119,8 @@ export const BlogComments = ({ blogId }) => {
       <StyledPaper elevation={0}>
         <AddCommentField
           blogId={blogId}
+          isPostBlogReviewSucess={isPostBlogReviewSucess}
+          isPostBlogReviewError={isPostBlogReviewError}
           label="Comment"
           placeholder="Add a comment..."
           onSucessClick={postBlogReviewMethod}
@@ -149,17 +151,40 @@ export const BlogComments = ({ blogId }) => {
                   reviewId={showReplyIdButton}
                   blogId={blogId}
                   label="Reply"
+                  isPostBlogReviewCommentSucess={isPostBlogReviewCommentSucess}
+                  isPostBlogReviewCommentError={isPostBlogReviewCommentError}
                   placeholder="Add a reply..."
                   onSucessClick={postBlogReviewCommentsMethod}
                 />
               )}
               {item.reviewCommentsCount > 0 && (
-                <ShowCommentReplies
-                  reviewId={item._id}
-                  replyButton={replyButton}
-                  onClickReply={onClickReply}
-                  reviewCommentsCount={item.reviewCommentsCount}
-                />
+                <>
+                  <Chip
+                    size="small"
+                    label={`${item.reviewCommentsCount} replies`}
+                    variant="outlined"
+                    onClick={() => {
+                      setReviewId(item._id);
+                      setrepliesButtonState((prevState) => !prevState);
+                    }}
+                    color="primary"
+                    sx={{
+                      color: "rgba(41, 41, 41, 1)",
+                      fontFamily: `sohne, "Helvetica Neue", Helvetica, Arial, sans-serif`,
+                      fontWeight: 200,
+                      marginTop: 2,
+                      marginInline: 2,
+                      width: 100,
+                      border: 0,
+                    }}
+                    icon={
+                      reviewId ? <ExpandMoreIcon /> : <KeyboardArrowUpIcon />
+                    }
+                  />
+                  {repliesButtonState && reviewId === item._id && (
+                    <BlogCommentsReplies reviewId={reviewId} />
+                  )}
+                </>
               )}
             </StyledCommentDetails>
           </StyledCommentsSection>

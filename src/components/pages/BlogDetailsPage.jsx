@@ -1,11 +1,11 @@
 import React, { useMemo } from "react";
-import { BlogsDetails } from "../organisms/BlogsDetails";
+import { BlogsDetails } from "../organisms/BlogDetailsSection/BlogsDetails";
 import { UserDetails } from "../organisms/UserDetails";
 import { Grid } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { AppBar } from "../organisms/AppBar";
 import { useFetchBlog } from "../../api/queries/useFetchBlog";
-import { BlogComments } from "../organisms/BlogComments";
+import { BlogComments } from "../organisms/BlogCommentsSection/BlogComments";
 
 const BlogDetailsPage = (props) => {
   let params = useParams();

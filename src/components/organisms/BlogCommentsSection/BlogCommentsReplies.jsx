@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { Paper } from "../molecules/Paper";
-import { Typography } from "../atoms/Typography";
-import { Avatar } from "@mui/material";
-import { useFetchBlogReviewsComments } from "../../api/queries/useFetchBlogReviewsComments";
+import { Paper } from "../../molecules/Paper";
+import { Typography } from "../../atoms/Typography";
+import { Avatar, Box } from "@mui/material";
+import { useFetchBlogReviewsComments } from "../../../api/queries/useFetchBlogReviewsComments";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   display: "flex",
@@ -37,10 +37,21 @@ const StyledBlogCommentsAndReviews = styled(Typography)(({ theme }) => ({
   marginTop: 10,
 }));
 
+const StyledAvatarAndUsername = styled(Box)(({ theme }) => ({
+  display: "flex",
+  flexDirection: "row",
+  alignContent: "center",
+  marginBlock: 5,
+}));
+
+const StyledCommentsAndReviews = styled(Box)(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  alignContent: "center",
+}));
+
 export const BlogCommentsReplies = ({ reviewId }) => {
-  console.log("reviewId~~~~~~~~~~~~~~~>", reviewId);
-  const { data, isSuccess, isError, isLoading } =
-    useFetchBlogReviewsComments(reviewId);
+  const { data, isSuccess, isLoading } = useFetchBlogReviewsComments(reviewId);
 
   if (isLoading) {
     return (
@@ -65,15 +76,7 @@ export const BlogCommentsReplies = ({ reviewId }) => {
     return (
       <StyledPaper elevation={0}>
         {data?.data.map((item) => (
-          <div
-            className="avatarAndUsername"
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignContent: "center",
-              marginBlock: 5,
-            }}
-          >
+          <StyledAvatarAndUsername>
             <Avatar
               sx={{
                 marginBottom: 2,
@@ -84,14 +87,7 @@ export const BlogCommentsReplies = ({ reviewId }) => {
               alt="username"
               {...stringAvatar(`${item.user.firstName} ${item.user.lastName}`)}
             />
-            <div
-              className="commentsAndReviewas"
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignContent: "center",
-              }}
-            >
+            <StyledCommentsAndReviews>
               <Typography
                 sx={{
                   fontSize: 15,
@@ -107,8 +103,8 @@ export const BlogCommentsReplies = ({ reviewId }) => {
               <StyledBlogCommentsAndReviews variant="body1">
                 {item.blogReviewComment}
               </StyledBlogCommentsAndReviews>
-            </div>
-          </div>
+            </StyledCommentsAndReviews>
+          </StyledAvatarAndUsername>
         ))}
       </StyledPaper>
     );

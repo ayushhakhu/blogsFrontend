@@ -16,14 +16,26 @@ export const Form = ({ fields, onClickHandler, formtitle, ...props }) => {
             <Controller
               name={item.name}
               control={control}
-              rules={{ required: item.required }}
-              render={({ field }) => (
-                <TextField
-                  type={item.type}
-                  {...field}
-                  label={item.name}
-                  variant="outlined"
-                />
+              rules={{
+                required: {
+                  value: item.required,
+                  message: `${item.name} is a required field`,
+                },
+              }}
+              render={({ field, fieldState: { error } }) => (
+                <>
+                  <TextField
+                    type={item.type}
+                    {...field}
+                    label={item.name}
+                    variant="outlined"
+                  />
+                  {error && (
+                    <span style={{ margin: 0, padding: 0, color: "red" }}>
+                      {error.message}
+                    </span>
+                  )}
+                </>
               )}
             />
           ))}

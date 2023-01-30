@@ -1,10 +1,10 @@
 import { axiosInstance } from "../axiosInstance";
 import { useBaseQuery } from "../useBaseQuery";
 
-export const useFetchBlogReviews = (reviewId) => {
+export const useFetchBlogReviews = (blogId) => {
   const fetchBlogReviews = () => {
-    return axiosInstance.get(`/blog_reviews/${reviewId}?page=1`);
+    return axiosInstance.get(`/blog_reviews/${blogId}?page=1`);
   };
 
-  return useBaseQuery(`fetchBlogReviews${reviewId}`, fetchBlogReviews);
+  return useBaseQuery(`fetchBlogReviews${blogId}`, fetchBlogReviews);
 };

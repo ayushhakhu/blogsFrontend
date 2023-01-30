@@ -4,11 +4,10 @@ import { Paper } from "../molecules/Paper";
 import { AppBar } from "../organisms/AppBar";
 import { useLogin } from "../../api/mutations/useLogin";
 import { useNavigate } from "react-router-dom";
-import { Snackbar } from "../molecules/Snackbar";
 
 const LoginPage = () => {
   const naviagte = useNavigate();
-  const { mutate, isError, isSuccess } = useLogin();
+  const { mutate } = useLogin();
   const fields = useMemo(
     () => [
       { name: "UserMail", type: "text", required: true },
@@ -17,7 +16,7 @@ const LoginPage = () => {
     []
   );
 
-  const onClickHandler = useCallback(
+  const loginHandler = useCallback(
     (data) => {
       const payload = { username: data.UserMail, password: data.UserPassword };
       mutate(payload, {
@@ -29,18 +28,11 @@ const LoginPage = () => {
     [mutate, naviagte]
   );
 
-  if (isError) {
-    return <Snackbar message="Please Login with Valid Credentials" />;
-  }
   return (
     <>
       <AppBar />
       <Paper elevation={0}>
-        <Form
-          fields={fields}
-          onClickHandler={onClickHandler}
-          formtitle="Login"
-        />
+        <Form fields={fields} onClickHandler={loginHandler} formtitle="Login" />
       </Paper>
     </>
   );
