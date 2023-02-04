@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { IconButton } from "../atoms/IconButton";
 import { Delete } from "@mui/icons-material";
 import styled from "@emotion/styled";
 import Chip from "@mui/material/Chip";
+import { AuthContext } from "../../hooks/AuthContext";
+import { useDeleteReview } from "../../api/mutations/useDeleteReview";
 
 const StyledBlogCommentsAndReviewsActions = styled("div")(({ theme }) => ({
   overflow: "hidden",
@@ -25,7 +27,14 @@ export const BlogCommentsAndReviewsActions = ({
   setshowReplyIdButton,
   id,
   showReplyIdButton,
+  username: bodyUsername,
+  blogId,
 }) => {
+  const { username } = useContext(AuthContext);
+  const { mutate } = useDeleteReview(blogId);
+  const onDeleteReviewHandler = () => {
+    mutate(id);
+  };
   return (
     <StyledBlogCommentsAndReviewsActions>
       {!showReplyIdButton ? (
@@ -80,9 +89,11 @@ export const BlogCommentsAndReviewsActions = ({
           }}
         />
       )}
-      <IconButton>
-        <Delete fontSize="small" />
-      </IconButton>
+      {username === bodyUsername && (
+        <IconButton onClick={onDeleteReviewHandler}>
+          <Delete fontSize="small" />
+        </IconButton>
+      )}
     </StyledBlogCommentsAndReviewsActions>
   );
 };

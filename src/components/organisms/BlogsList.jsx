@@ -17,8 +17,6 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 export const BlogsList = (props) => {
   const { data, isSuccess, isError, error, status } = useFetchBlogs();
 
-  console.log("~~~~~~~~~~>", data?.data.length);
-
   if (status === "error") {
     return <AlertProvider severity="info" text={error.message} />;
   }

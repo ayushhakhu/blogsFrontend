@@ -9,10 +9,7 @@ import { useFetchBlogReviews } from "../../../api/queries/useFetchBlogReviews";
 import AlertProvider from "../../atoms/AlertProvider";
 import { usePostBlogReview } from "../../../api/mutations/usePostBlogReview";
 import { usePostBlogReviewComments } from "../../../api/mutations/usePostBlogReviewComments";
-import Chip from "@mui/material/Chip";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { BlogCommentsReplies } from "./BlogCommentsReplies";
+import { BlogCommentsRepliesActionHandlers } from "./BlogCommentsRepliesActionHandlers";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   display: "flex",
@@ -77,8 +74,6 @@ const StyledCommentsUsername = styled(Typography)(() => ({
 
 export const BlogComments = ({ blogId }) => {
   const [showReplyIdButton, setshowReplyIdButton] = useState(null);
-  const [repliesButtonState, setrepliesButtonState] = useState(false);
-  const [reviewId, setReviewId] = useState(null);
 
   const { isSuccess, isError, data } = useFetchBlogReviews(blogId);
 
@@ -145,6 +140,8 @@ export const BlogComments = ({ blogId }) => {
                 setshowReplyIdButton={setshowReplyIdButton}
                 showReplyIdButton={showReplyIdButton}
                 id={item._id}
+                username={item?.user?.username}
+                blogId={blogId}
               />
               {showReplyIdButton === item._id && (
                 <AddCommentField
@@ -158,33 +155,11 @@ export const BlogComments = ({ blogId }) => {
                 />
               )}
               {item.reviewCommentsCount > 0 && (
-                <>
-                  <Chip
-                    size="small"
-                    label={`${item.reviewCommentsCount} replies`}
-                    variant="outlined"
-                    onClick={() => {
-                      setReviewId(item._id);
-                      setrepliesButtonState((prevState) => !prevState);
-                    }}
-                    color="primary"
-                    sx={{
-                      color: "rgba(41, 41, 41, 1)",
-                      fontFamily: `sohne, "Helvetica Neue", Helvetica, Arial, sans-serif`,
-                      fontWeight: 200,
-                      marginTop: 2,
-                      marginInline: 2,
-                      width: 100,
-                      border: 0,
-                    }}
-                    icon={
-                      reviewId ? <ExpandMoreIcon /> : <KeyboardArrowUpIcon />
-                    }
-                  />
-                  {repliesButtonState && reviewId === item._id && (
-                    <BlogCommentsReplies reviewId={reviewId} />
-                  )}
-                </>
+                <BlogCommentsRepliesActionHandlers
+                  id={item._id}
+                  reviewCommentsCount={item.reviewCommentsCount}
+                  bodyUsername={item?.user?.username}
+                />
               )}
             </StyledCommentDetails>
           </StyledCommentsSection>

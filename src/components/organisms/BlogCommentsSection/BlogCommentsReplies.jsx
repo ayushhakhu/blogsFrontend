@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "@emotion/styled";
 import { Paper } from "../../molecules/Paper";
 import { Typography } from "../../atoms/Typography";
 import { Avatar, Box } from "@mui/material";
 import { useFetchBlogReviewsComments } from "../../../api/queries/useFetchBlogReviewsComments";
+import { IconButton } from "../../atoms/IconButton";
+import { AuthContext } from "../../../hooks/AuthContext";
+import { useDeleteReviewComment } from "../../../api/mutations/useDeleteBlogReviewComment";
+import { Delete } from "@mui/icons-material";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   display: "flex",
@@ -52,6 +56,13 @@ const StyledCommentsAndReviews = styled(Box)(({ theme }) => ({
 
 export const BlogCommentsReplies = ({ reviewId }) => {
   const { data, isSuccess, isLoading } = useFetchBlogReviewsComments(reviewId);
+
+  const { username } = useContext(AuthContext);
+  const { mutate } = useDeleteReviewComment(reviewId);
+
+  function onDeleteReviewHandler(reviewCommentId) {
+    mutate(reviewCommentId);
+  }
 
   if (isLoading) {
     return (
@@ -104,6 +115,11 @@ export const BlogCommentsReplies = ({ reviewId }) => {
                 {item.blogReviewComment}
               </StyledBlogCommentsAndReviews>
             </StyledCommentsAndReviews>
+            {username === item?.user?.username && (
+              <IconButton onClick={() => onDeleteReviewHandler(item._id)}>
+                <Delete fontSize="small" />
+              </IconButton>
+            )}
           </StyledAvatarAndUsername>
         ))}
       </StyledPaper>
