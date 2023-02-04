@@ -86,8 +86,8 @@ export const BlogCommentsReplies = ({ reviewId }) => {
   if (isSuccess && data?.data) {
     return (
       <StyledPaper elevation={0}>
-        {data?.data.map((item) => (
-          <StyledAvatarAndUsername>
+        {data?.data.map((item, index) => (
+          <StyledAvatarAndUsername key={index}>
             <Avatar
               sx={{
                 marginBottom: 2,

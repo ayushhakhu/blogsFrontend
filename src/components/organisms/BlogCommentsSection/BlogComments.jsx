@@ -120,8 +120,8 @@ export const BlogComments = ({ blogId }) => {
           placeholder="Add a comment..."
           onSucessClick={postBlogReviewMethod}
         />
-        {data?.data.map((item) => (
-          <StyledCommentsSection>
+        {data?.data.map((item, index) => (
+          <StyledCommentsSection key={index}>
             <Avatar
               sx={{
                 marginBottom: 2,

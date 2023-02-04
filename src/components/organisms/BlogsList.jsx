@@ -6,6 +6,7 @@ import { useFetchBlogs } from "../../api/queries/useFetchBlogs";
 import { AlertProvider } from "../atoms/AlertProvider";
 import { Typography } from "../atoms/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
+// import { Pagination } from "../atoms/Pagination";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   display: "flex",
@@ -14,7 +15,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   flexDirection: "column",
 }));
 
-export const BlogsList = (props) => {
+export const BlogsList = () => {
   const { data, isSuccess, isError, error, status } = useFetchBlogs();
 
   if (status === "error") {
@@ -37,8 +38,9 @@ export const BlogsList = (props) => {
   if (isSuccess && !isError) {
     return (
       <StyledPaper elevation={0}>
-        {data?.data.map((item) => (
+        {data?.data.map((item, index) => (
           <BlogItem
+            key={index}
             blogTitle={item.blogTitle}
             blogCategory={item.blogCategory}
             blogAuthor={item.blogAuthor?.username}
@@ -47,10 +49,10 @@ export const BlogsList = (props) => {
           />
         ))}
         {/* <Pagination
-        page={10}
-        count={1}
-        onChange={(_, page) => console.log("hello")}
-      /> */}
+          page={10}
+          count={1}
+          onChange={(_, page) => console.log("hello")}
+        /> */}
       </StyledPaper>
     );
   }

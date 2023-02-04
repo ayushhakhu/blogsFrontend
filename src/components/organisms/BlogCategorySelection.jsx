@@ -51,8 +51,9 @@ export const BlogCategorySelection = () => {
         {"Discover more of what matters to you"}
       </Typography>
       <div style={{ margin: 0, padding: 0 }}>
-        {categoriesList.map((item) => (
+        {categoriesList.map((item, index) => (
           <Button
+            key={index}
             sx={{
               textTransform: "none",
               margin: 1,
