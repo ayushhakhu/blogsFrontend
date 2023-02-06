@@ -3,7 +3,7 @@ import { Paper } from "../molecules/Paper";
 import { MyBlogItem } from "../molecules/MyBlogItem";
 import { Typography } from "../atoms/Typography";
 import styled from "@emotion/styled";
-import { useFetchUserBlogs } from "../../api/queries/useFetchUserBlogs";
+import { useFetchCategoryBlogs } from "../../api/queries/useFetchCategoryBlogs";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   display: "flex",
@@ -12,8 +12,8 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   flexDirection: "column",
 }));
 
-export const MyBlogsList = ({ username }) => {
-  const { isError, isSuccess, data } = useFetchUserBlogs(username);
+export const CategoryBlogsList = ({ category }) => {
+  const { isError, isSuccess, data } = useFetchCategoryBlogs(category);
 
   if (isError) {
     <StyledPaper elevation={0}>
@@ -22,16 +22,22 @@ export const MyBlogsList = ({ username }) => {
       </Typography>
     </StyledPaper>;
   }
-  if (data?.data && isSuccess) {
-    const authorName = `${data?.data[0].blogAuthor?.firstName} ${data?.data[0].blogAuthor.lastName}`;
 
+  if (data?.data.length === 0 && isSuccess) {
     return (
       <StyledPaper elevation={0}>
         <Typography sx={{ paddingInline: 14, paddingBlock: 5 }} variant={"h6"}>
-          {authorName}
+          No Blogs
         </Typography>
+      </StyledPaper>
+    );
+  }
+  if (data?.data && isSuccess) {
+    return (
+      <StyledPaper elevation={0}>
         {data?.data.map((item) => (
           <MyBlogItem
+            key={item.blogTitle}
             blogTitle={item.blogTitle}
             blogCategory={item.blogCategory}
             blogDetails={item.blogDetails}

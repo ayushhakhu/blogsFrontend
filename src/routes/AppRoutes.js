@@ -14,6 +14,9 @@ const CreateNewBlogPage = lazy(() =>
 const LoginPage = lazy(() => import("../components/pages/LoginPage"));
 const SignupPage = lazy(() => import("../components/pages/SignupPage"));
 const MyBlogs = lazy(() => import("../components/pages/MyBlogs"));
+const CategoryWiseBlogs = lazy(() =>
+  import("../components/pages/CategoryWiseBlogs")
+);
 
 export const AppRoutes = () => {
   const { isAuthenticated } = useContext(AuthContext);
@@ -24,9 +27,8 @@ export const AppRoutes = () => {
       {!isAuthenticated && <Route path="/login" element={<LoginPage />} />}
       {!isAuthenticated && <Route path="/signup" element={<SignupPage />} />}
       <Route path="/blog/:blogId" element={<BlogDetailsPage />} />
-      {isAuthenticated && (
-        <Route path="/user/:userName" element={<MyBlogs />} />
-      )}
+      <Route path="/user/:userName" element={<MyBlogs />} />
+      <Route path="/category/:category" element={<CategoryWiseBlogs />} />
       {isAuthenticated && (
         <Route path="/createNewBlog" element={<CreateNewBlogPage />} />
       )}

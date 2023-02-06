@@ -3,6 +3,7 @@ import { Paper } from "../molecules/Paper";
 import styled from "@emotion/styled";
 import { Typography } from "../atoms/Typography";
 import { Button } from "../atoms/Button";
+import { useNavigate } from "react-router-dom";
 
 const StyledBlogCategorySelection = styled(Paper)(({ theme }) => ({
   [theme.breakpoints.up("sm")]: {
@@ -22,16 +23,10 @@ const StyledBlogCategorySelection = styled(Paper)(({ theme }) => ({
   right: 0,
 }));
 
-const categoriesList = [
-  "Science",
-  "Philosophy",
-  "Technology",
-  "Science",
-  "Philosophy",
-  "Technology",
-];
+const categoriesList = ["Science", "Philosophy", "Technology"];
 
 export const BlogCategorySelection = () => {
+  const navigate = useNavigate();
   return (
     <StyledBlogCategorySelection elevation={0}>
       <Typography
@@ -53,6 +48,7 @@ export const BlogCategorySelection = () => {
       <div style={{ margin: 0, padding: 0 }}>
         {categoriesList.map((item, index) => (
           <Button
+            onClick={() => navigate(`/category/${item}`)}
             key={index}
             sx={{
               textTransform: "none",

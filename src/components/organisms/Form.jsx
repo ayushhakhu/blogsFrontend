@@ -12,9 +12,9 @@ export const Form = ({ fields, onClickHandler, formtitle, ...props }) => {
       <form onSubmit={handleSubmit(onClickHandler)}>
         <Stack spacing={5}>
           <Typography>{formtitle}</Typography>
-          {fields.map((item, index) => (
+          {fields.map((item) => (
             <Controller
-              key={index}
+              key={item.name}
               name={item.name}
               control={control}
               rules={{
@@ -23,10 +23,11 @@ export const Form = ({ fields, onClickHandler, formtitle, ...props }) => {
                   message: `${item.name} is a required field`,
                 },
               }}
-              render={({ field: { ref }, fieldState: { error } }) => (
+              render={({ field, fieldState: { error } }) => (
                 <>
                   <TextField
-                    inputRef={ref}
+                    {...field}
+                    // inputRef={ref}
                     type={item.type}
                     label={item.name}
                     variant="outlined"
