@@ -17,12 +17,11 @@ export const AuthContextProvider = (props) => {
   const [username, setusername] = useState(sessionStorage.getItem("username"));
 
   const onLogin = (tokenValue, username) => {
-    console.log("tokenValue~~~~~~>", tokenValue, username);
-    setisAuthenticated(true);
-    setusername(username);
     sessionStorage.setItem("token", tokenValue);
     sessionStorage.setItem("username", username);
     settoken(tokenValue);
+    setisAuthenticated(true);
+    setusername(username);
   };
 
   const onLogout = () => {

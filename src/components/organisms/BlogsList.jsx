@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Paper } from "../molecules/Paper";
 import { BlogItem } from "../molecules/BlogItem";
 import styled from "@emotion/styled";
 import { useFetchBlogs } from "../../api/queries/useFetchBlogs";
+import { useFetchBlogsCount } from "../../api/queries/useFetchBlogsCount";
 import { AlertProvider } from "../atoms/AlertProvider";
 import { Typography } from "../atoms/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
-// import { Pagination } from "../atoms/Pagination";
+import { Pagination } from "../atoms/Pagination";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   display: "flex",
@@ -16,7 +17,23 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 }));
 
 export const BlogsList = () => {
-  const { data, isSuccess, isError, error, status } = useFetchBlogs();
+  const [page, setPage] = useState(1);
+  const [pageCount, setpageCount] = useState(1);
+
+  const { data, isSuccess, isError, error, status } = useFetchBlogs(page);
+  const { data: blogsCountData, isSuccess: blogsCountSuccess } =
+    useFetchBlogsCount();
+
+  const changePageIndex = (pageIndex) => {
+    setPage(pageIndex);
+  };
+
+  useEffect(() => {
+    if (blogsCountSuccess && blogsCountData) {
+      const countVal = Math.ceil(blogsCountData?.data.blogs / 10);
+      setpageCount(countVal);
+    }
+  }, [blogsCountSuccess, blogsCountData]);
 
   if (status === "error") {
     return <AlertProvider severity="info" text={error.message} />;
@@ -48,11 +65,11 @@ export const BlogsList = () => {
             _id={item._id}
           />
         ))}
-        {/* <Pagination
-          page={10}
-          count={1}
-          onChange={(_, page) => console.log("hello")}
-        /> */}
+        <Pagination
+          page={page}
+          count={pageCount}
+          onChange={(_, page) => changePageIndex(page)}
+        />
       </StyledPaper>
     );
   }

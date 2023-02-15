@@ -5,7 +5,7 @@ import { Typography } from "../atoms/Typography";
 import styled from "@emotion/styled";
 import { useFetchUserBlogs } from "../../api/queries/useFetchUserBlogs";
 
-const StyledPaper = styled(Paper)(({ theme }) => ({
+const StyledPaper = styled(Paper)(() => ({
   display: "flex",
   padding: 0,
   borderRadius: 0,
@@ -32,6 +32,7 @@ export const MyBlogsList = ({ username }) => {
         </Typography>
         {data?.data.map((item) => (
           <MyBlogItem
+            key={item._id}
             blogTitle={item.blogTitle}
             blogCategory={item.blogCategory}
             blogDetails={item.blogDetails}
