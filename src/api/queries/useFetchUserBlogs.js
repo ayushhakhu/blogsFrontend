@@ -6,5 +6,5 @@ export const useFetchUserBlogs = (username) => {
     return axiosInstance.get(`/user/${username}`);
   };
 
-  return useBaseQuery(`fetchUserBlogs`, fetchUserBlogs);
+  return useBaseQuery([`fetchUserBlogs`,username], fetchUserBlogs);
 };

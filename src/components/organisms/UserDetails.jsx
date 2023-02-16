@@ -78,7 +78,7 @@ export const UserDetails = ({ data, isSuccess, isError, isLoading }) => {
               marginTop: 4,
             }}
             variant="body1"
-          >{`10  Posts`}</Typography>
+          >{`${data?.blogAuthor?.noOfBlogs} Posts`}</Typography>
         </Stack>
       </StyledPaper>
     );

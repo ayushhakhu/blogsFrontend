@@ -1,6 +1,6 @@
 import React from "react";
 import { Paper } from "../molecules/Paper";
-import { MyBlogItem } from "../molecules/MyBlogItem";
+import { BlogItem } from "../molecules/BlogItem";
 import { Typography } from "../atoms/Typography";
 import styled from "@emotion/styled";
 import { useFetchCategoryBlogs } from "../../api/queries/useFetchCategoryBlogs";
@@ -36,7 +36,7 @@ export const CategoryBlogsList = ({ category }) => {
     return (
       <StyledPaper elevation={0}>
         {data?.data.map((item) => (
-          <MyBlogItem
+          <BlogItem
             key={item.blogTitle}
             blogTitle={item.blogTitle}
             blogCategory={item.blogCategory}

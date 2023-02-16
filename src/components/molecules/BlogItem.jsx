@@ -89,9 +89,11 @@ export const BlogItem = ({
   return (
     <StyledItem elevation={0} onClick={() => navigate(`/blog/${_id}`)}>
       <StyledStack>
-        <ListItemText>
-          <StyledUsername variant="h4">{blogAuthor}</StyledUsername>
-        </ListItemText>
+        {blogAuthor && (
+          <ListItemText>
+            <StyledUsername variant="h4">{blogAuthor}</StyledUsername>
+          </ListItemText>
+        )}
         <ListItemText>
           <StyledBlogTitle variant="h3">{blogTitle}</StyledBlogTitle>
         </ListItemText>

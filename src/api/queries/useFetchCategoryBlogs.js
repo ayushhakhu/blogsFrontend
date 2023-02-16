@@ -6,5 +6,5 @@ export const useFetchCategoryBlogs = (category) => {
     return axiosInstance.get(`/category/${category}`);
   };
 
-  return useBaseQuery(`fetchCategoryBlogs`, fetchCategoryBlogs);
+  return useBaseQuery([`fetchCategoryBlogs`,category], fetchCategoryBlogs);
 };

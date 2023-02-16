@@ -1,9 +1,9 @@
 import React from "react";
 import { Paper } from "../molecules/Paper";
-import { MyBlogItem } from "../molecules/MyBlogItem";
 import { Typography } from "../atoms/Typography";
 import styled from "@emotion/styled";
 import { useFetchUserBlogs } from "../../api/queries/useFetchUserBlogs";
+import { BlogItem } from "../molecules/BlogItem";
 
 const StyledPaper = styled(Paper)(() => ({
   display: "flex",
@@ -31,7 +31,7 @@ export const MyBlogsList = ({ username }) => {
           {authorName}
         </Typography>
         {data?.data.map((item) => (
-          <MyBlogItem
+          <BlogItem
             key={item._id}
             blogTitle={item.blogTitle}
             blogCategory={item.blogCategory}

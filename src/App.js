@@ -6,7 +6,7 @@ import { AuthContextProvider } from "./hooks/AuthContext";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
+// import { ReactQueryDevtools } from "react-query/devtools";
 
 const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
 
@@ -28,7 +28,7 @@ function App() {
   return (
     <AuthContextProvider>
       <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen={false} />
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
         <Provider store={store}>
           <ThemeProvider theme={theme}>
             <Suspense fallback={<>Loading...</>}>
