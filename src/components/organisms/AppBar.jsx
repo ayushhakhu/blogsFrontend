@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import { useCreateNewBlogs } from "../../api/mutations/useCreateNewBlogs";
 import { AuthContext } from "../../hooks/AuthContext";
-import {Box} from "@mui/material";
+import { Box } from "@mui/material";
 
 const StyledHeaderTitle = styled(Typography)(({ theme }) => ({
   fontFamily: `medium-content-sans-serif-font, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif`,
@@ -20,7 +20,6 @@ const StyledHeaderTitle = styled(Typography)(({ theme }) => ({
   },
   color: "rgba(0,0,0,0.8)",
 }));
-
 
 export const AppBar = ({
   handleSubmit,
@@ -44,10 +43,12 @@ export const AppBar = ({
 
   return (
     <MuiAppBar color="transparent" position="static">
-      <ToolBar style={{display:"flex", justifyContent:"space-between"}}>
-        <StyledHeaderTitle variant="h5" onClick={() => navigate("/")}>
-          Medium
-        </StyledHeaderTitle>
+      <ToolBar style={{ display: "flex", justifyContent: "space-between" }}>
+        <Button>
+          <StyledHeaderTitle variant="h5" onClick={() => navigate("/")}>
+            Medium
+          </StyledHeaderTitle>
+        </Button>
         <Box>
           <Button
             sx={{ textTransform: "None", borderRadius: 10 }}
